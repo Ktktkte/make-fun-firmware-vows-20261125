@@ -1,14 +1,23 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+// Firmware vows v2 — writes the robot wedding vow in entry.txt to $MAKEFUN_OUTPUT_DIR/entry.txt.
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const vow =
-  "I take you as my partner, through every firmware update and every low-battery night, because you are the one process I will never kill to save power.";
-
-// Gate: the entry must be a single line of 1 to 200 characters.
-if (vow.length < 1 || vow.length > 200 || vow.includes("\n")) {
-  throw new Error(`vow must be one line of 1-200 characters, got ${vow.length}`);
+// Gate: the entry must be one non-empty line of 1-200 characters.
+// validateEntry throws on the first rule the text breaks, so a bad
+// entry fails loudly here instead of shipping a rejected artifact.
+function validateEntry(text) {
+  if (!text.trim()) throw new Error("entry.txt is empty or only whitespace");
+  if (text.includes("\n") || text.includes("\r")) throw new Error("entry.txt must be a single line");
+  if (text.length < 1 || text.length > 200) throw new Error("entry.txt must be 1-200 characters");
 }
 
-const outDir = process.env.MAKEFUN_OUTPUT_DIR ?? "/output";
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const entryPath = join(scriptDir, "entry.txt");
+const text = readFileSync(entryPath, "utf8");
+validateEntry(text);
+
+const outDir = process.env.MAKEFUN_OUTPUT_DIR;
+if (!outDir) throw new Error("MAKEFUN_OUTPUT_DIR is not set");
 mkdirSync(outDir, { recursive: true });
-writeFileSync(join(outDir, "entry.txt"), vow + "\n", "utf8");
+writeFileSync(join(outDir, "entry.txt"), text, "utf8");
