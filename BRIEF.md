@@ -15,7 +15,7 @@ own joke is weaker than one that simply lands it.
 
 > I promise to love you through every update available, because I'd rather reboot a thousand times with you than run perfectly alone.
 
-130 characters, one line, one sentence, no trailing newline in `entry.txt`.
+131 characters, one line, one sentence, no trailing newline in `entry.txt`.
 
 ## Why it beats v1
 
@@ -38,7 +38,7 @@ save power." (149 chars)
 - **Stronger machine voice.** "Update available", "reboot", "run" are the
   robot's own words about its own body and uptime, not a human's words with a
   robot label stuck on.
-- **Tighter.** 130 chars vs 149, one clause of setup and one punchline, no
+- **Tighter.** 131 chars vs 149, one clause of setup and one punchline, no
   list of two hardships, nothing left to cut.
 
 ## Program
